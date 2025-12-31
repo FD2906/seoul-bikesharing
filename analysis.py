@@ -181,7 +181,7 @@ hourly = (
     .reset_index() # reset index to turn groupby object back to dataframe
 )
 
-plt.figure(figsize = (10,5))
+plt.figure(figsize = (12, 8))
 
 sns.lineplot(
     data = hourly, 

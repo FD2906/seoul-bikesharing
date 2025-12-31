@@ -287,7 +287,7 @@ plt.show()
 
 # ================================================== 6. CORRELATION MATRIX ================================================== #
 
-plt.figure(figsize=(8,6)) # set figure size
+plt.figure(figsize=(12, 8)) # set figure size
 
 # correlation matrix for weather variables and rented bike count
 matrix = df[[
@@ -309,7 +309,7 @@ for row in matrix: # for each row in the matrix
     # if a value is > 0.7, print it out as potential multicollinearity issue
     if row != 'Rented Bike Count': # skip target variable
         for col in matrix.columns:
-            if col != row and abs(matrix.loc[row, col]) > 0.7: # if col is row then this is 1.0 - skip
+            if col != row and abs(matrix.loc[row, col]) > 0.7: # if col is row then this is 1.0 - skip
                 print(f"High correlation between {row} and {col}: {matrix.loc[row, col]:.2f}")
                 high_collinearity_flag = True
 
@@ -317,13 +317,17 @@ if not high_collinearity_flag:
     print("No high correlations (> 0.7) found among weather variables.") 
 
 # create a heatmap for this correlation matrix
-sns.heatmap(
+ax = sns.heatmap(
     matrix, 
     annot = True, 
     cmap = "coolwarm", 
-    fmt = ".2f", # present values to 2 decimal places
+    fmt = ".2f", # present values to 2 decimal places
     linewidths = 0.5
 )
+
+# adjust font sizes and rotation
+ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right', fontsize=10)
+ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=10)
 
 plt.title("Correlation Heatmap")
 plt.tight_layout()
