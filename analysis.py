@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import linregress # linear regression statistical summaries
 import statsmodels.formula.api as smf # hypothesis testing 
+import statsmodels.api as sm # for multicollinearity testing
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 """
 Goal of the analyse stage: 
@@ -263,6 +265,89 @@ plt.suptitle('Pairwise relationships (selected features) by day type', y = 1.02)
 plt.savefig("imgs/eda/6-selected-pairplot.png", dpi = 300)
 plt.show()
 
+# ============= 1.7 New selected correlation matrix for collinearity testing =============
+
+print("==================================================")
+
+plt.figure(figsize=(12, 8)) # set figure size
+
+# correlation matrix for weather variables and rented bike count
+matrix = df[[
+    'temp', 
+    'humidity', 
+    'rainfall_log'
+]].corr()
+
+print("\nCollinearity check among weather variables:\n")
+
+high_collinearity_flag = False
+
+for row in matrix: # for each row in the matrix
+    # if a value is > 0.7, print it out as potential multicollinearity issue
+    if row != 'Rented Bike Count': # skip target variable
+        for col in matrix.columns:
+            if col != row and abs(matrix.loc[row, col]) > 0.7: # if col is row then this is 1.0 - skip
+                print(f"High correlation between {row} and {col}: {matrix.loc[row, col]:.2f}")
+                high_collinearity_flag = True
+
+if not high_collinearity_flag:
+    print("No high correlations (> 0.7) found among weather variables.") 
+
+# create a heatmap for this correlation matrix
+ax = sns.heatmap(
+    matrix, 
+    annot = True, 
+    cmap = "coolwarm", 
+    fmt = ".2f", # present values to 2 decimal places
+    linewidths = 0.5
+)
+
+# adjust font sizes and rotation
+ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right', fontsize=10)
+ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=10)
+
+plt.title("Correlation Heatmap")
+plt.tight_layout()
+plt.savefig("imgs/eda/7-correlation-heatmap.png")
+plt.show()
+
+
+# ============= 1.8 VIF calculations for multicollinearity testing =============
+
+print("==================================================")
+
+# select predictors to test on
+vif_cols = ['temp', 'humidity', 'rainfall_log']
+
+# drop NA rows 
+X_vif = df[vif_cols].dropna()
+
+# add constant for VIF calculation 
+X_vif_const = sm.add_constant(X_vif)
+
+vif_df = pd.DataFrame({
+    'feature': X_vif_const.columns, 
+    'VIF': [variance_inflation_factor(X_vif_const.values, i) for i in range(X_vif_const.shape[1])]
+})
+
+# round values for readability, drop constant row
+vif_df['VIF'] = vif_df['VIF'].round(3) # rounding
+vif_df = vif_df[vif_df['feature'] != 'const'] # drop row
+
+print("\nVariance Inflation Factors (VIF):\n")
+print(vif_df.to_string(index=False))
+
+"""
+     feature   VIF
+        temp 1.284
+    humidity 1.526
+rainfall_log 1.215
+
+VIF > 4 -> 'further investigation', moderate multicollinearity
+VIF > 10 -> 'requires correction', severe multicollinearity
+
+Source: (Pennsylvania State University, 2018)
+"""
 
 
 # ====================================================== 2. Simple linear regression ====================================================== # 
