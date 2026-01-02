@@ -279,44 +279,106 @@ target = "rentals"
 # finally plot a complementary regplot for each predictor vs. target
 
 for i, col in enumerate(weather_cols, start=1): # enumerate to get both index (1, 2, 3) and column name
-    print(f"\n--- Simple Linear Regression: {col} vs. {target} ---\n")
-    
-    # perform linear regression
-    slope, intercept, r_value, p_value, std_err = linregress(df[col], df[target])
-    
-    # print summary statistics to terminal
-    print(f"Slope: {slope:.3f}")
-    print(f"Intercept: {intercept:.3f}")
-    print(f"R-squared: {r_value**2:.3f}")
-    print(f"P-value: {p_value:.3e}")
-    print(f"Standard Error: {std_err:.3f}")
+    for day_type in ['Weekday', 'Weekend']: # split the data separately, create separate base dfs to find linregress stats from
 
-    # add to a dataframe, then save as csv in a results folder
-    results_df = pd.DataFrame({
-        'Predictor': [col],
-        'Slope': [slope],
-        'Intercept': [intercept],
-        'R-squared': [r_value**2],
-        'P-value': [p_value],
-        'Standard Error': [std_err]
-    })
+        current_df = df[df['day_type'] == day_type] # select weekday / weekend data one at a time
 
-    results_df.to_csv(f"results/{i}_linregress_{col}_vs_{target}.csv", index=False)
-    
-    # plot regplot
-    plt.figure(figsize=(8,6))
-    sns.regplot(
-        data = df,
-        x = col,
-        y = target,
-        scatter_kws = {'alpha':0.3, 's':30},
-        line_kws = {'color':'red'}
-    )
-    plt.title(f'Rentals vs {col} with linear regression fit')
+        print(f"\n--- Simple Linear Regression: {col} vs. {target} - {day_type.lower()} ---\n")
+        
+        # perform linear regression
+        slope, intercept, r_value, p_value, std_err = linregress(current_df[col], current_df[target])
+        
+        # round all five statistics to 3 decimal places
+        slope = round(slope, 3)
+        intercept = round(intercept, 3)
+        r2 = round(r_value**2, 3)
+        p_value = round(p_value, 3)
+        std_err = round(std_err, 3)
 
-    plt.tight_layout()
-    plt.savefig(f"imgs/regression/{i}-{col}-vs-{target}-regplot.png", dpi=300)
-    plt.show()
+        # print summary statistics to terminal
+        print(f"Slope: {slope}")
+        print(f"Intercept: {intercept}")
+        print(f"R-squared: {r_value**2}")
+        print(f"P-value: {p_value}")
+        print(f"Standard Error: {std_err}")
+
+        # add to a dataframe, then save as csv in a results folder
+        results_df = pd.DataFrame({
+            'Predictor': [col],
+            'Slope': [slope],
+            'Intercept': [intercept],
+            'R-squared': [r_value**2],
+            'P-value': [p_value],
+            'Standard Error': [std_err]
+        })
+
+        results_df.to_csv(f"results/{i}_linregress_{day_type.lower()}_{col}_vs_{target}.csv", index=False)
+        
+        # plot regplot
+        plt.figure(figsize=(8,6))
+        sns.regplot(
+            data = current_df,
+            x = col,
+            y = target,
+            scatter_kws = {'alpha':0.3, 's':30},
+            line_kws = {'color':'red'}
+        )
+        plt.title(f'{day_type} rentals vs {col} with linear regression fit') 
+
+        plt.tight_layout()
+        plt.savefig(f"imgs/regression/{i}-{day_type.lower()}-{col}-vs-{target}-regplot.png", dpi=300)
+        plt.show()
+
+"""
+=== Simple Linear Regression: temp vs. rentals - weekday ===
+
+Slope: 72.106
+Intercept: -382.495
+R-squared: 0.1788473972059598
+P-value: 0.0
+Standard Error: 4.791
+
+--- Simple Linear Regression: temp vs. rentals - weekend ---
+
+Slope: 96.613
+Intercept: -906.402
+R-squared: 0.41820396436928886
+P-value: 0.0
+Standard Error: 5.676
+
+=== Simple Linear Regression: humidity vs. rentals - weekday ===
+
+Slope: -21.775
+Intercept: 2517.163
+R-squared: 0.2887016703448124
+P-value: 0.0
+Standard Error: 1.06
+
+--- Simple Linear Regression: humidity vs. rentals - weekend ---
+
+Slope: -20.347
+Intercept: 2298.641
+R-squared: 0.3461954835250854
+P-value: 0.0
+Standard Error: 1.393
+
+=== Simple Linear Regression: rainfall_log vs. rentals - weekday ===
+
+Slope: -619.14
+Intercept: 1165.914
+R-squared: 0.09497980001885938
+P-value: 0.0
+Standard Error: 59.263
+
+--- Simple Linear Regression: rainfall_log vs. rentals - weekend ---
+
+Slope: -889.502
+Intercept: 1179.522
+R-squared: 0.13916413669142455
+P-value: 0.0
+Standard Error: 110.202
+"""
+
 
 # ====================================================== 3. Hypothesis testing ====================================================== #
 
