@@ -490,27 +490,29 @@ model = smf.ols('''
 model explained:
 
 --- mathematical formula: ---
-rentals = Intercept + 
+rentals = β₀ +                              ---> intercept
           β₁(temp) + 
           β₂(rainfall_log) + 
           β₃(humidity) + 
-          β₄(is_weekend) +
+          β₄(is_weekend) +                  ---> constant intercept added for weekends
           β₅(temp x is_weekend) + 
           β₆(rainfall_log x is_weekend) + 
-          β₇(humidity x is_weekend)
+          β₇(humidity x is_weekend) +
+          ε                                 ---> random error
 
-if is_weekday = 0, rentals = Intercept + 
+if is_weekend = 0, rentals = β₀ + 
                       β₁(temp) + 
                       β₂(rainfall_log) + 
                       β₃(humidity)
 
-if is_weekend = 1, rentals = Intercept + 
+if is_weekend = 1, rentals = β₀ + 
                       (β₁ + β₅)(temp) + 
                       (β₂ + β₆)(rainfall_log) + 
                       (β₃ + β₇)(humidity) + 
                       β₄(is_weekend)
 
-on weekends, there is an additional temperature effect of β₅(temp), rainfall_log effect of β₆(rainfall_log), humidity effect of β₇(humidity)
+on weekends, there is an additional temperature effect of β₅(temp), 
+rainfall_log effect of β₆(rainfall_log), humidity effect of β₇(humidity)
 
 --- in Python and statmodels OLS: ---
 Q('rentals') = target variable
