@@ -471,7 +471,7 @@ Standard Error: 110.202
 # H0: "Weather variables affect bike rental demand equally across Weekdays and Weekends"
 # H1: "At least one weather variable exhibits a significantly different effect on bike rental demand between Weekdays and Weekends"
 
-print("\n" + "=" * 50 + "\n")
+print("\n" + "==============================================================================")
 
 # single regression with interaction terms
 
@@ -526,6 +526,12 @@ Q('humidity'):is_weekend = interaction term between humidity and weekend status 
 """
 
 print(model.summary()) # print results
+
+print("\n" + "==============================================================================" + "\n")
+
+print("Standard Error (SE):", round(np.sqrt(model.mse_resid), 3))  # standard error from numpy residual SE, matching excel results
+
+print("\n" + "==============================================================================" + "\n")
 
 """
 Statistical interpretation: 
