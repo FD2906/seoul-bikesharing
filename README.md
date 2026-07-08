@@ -70,10 +70,10 @@ seoul-bike-weather-analysis/
 ## 🚀 Reproduce This Analysis
 
 ```bash
-git clone https://github.com/FD2906/seoul-bike-weather-analysis.git
-cd seoul-bike-weather-analysis
+git clone https://github.com/FD2906/seoul-bikesharing.git
+cd seoul-bikesharing
 pip install -r requirements.txt
-python src/preprocessing.py
+python src/prep-process.py
 python src/analysis.py
 ```
 
