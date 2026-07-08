@@ -3,6 +3,8 @@
 
 > **Does weather affect bike-sharing demand differently depending on *why* you're riding?**
 
+📄 [Full report (PDF)](https://drive.google.com/file/d/1oP4Kq9S2VkR1_U7iOOiI_-lzDuqDnRUN/view?usp=drive_link)
+
 I'm an avid Lime user in London. I noticed I always check the weather before a weekend ride — but rarely before cycling to uni on a weekday. That small personal observation became the research question behind this project.
 
 Using Seoul's public bike-sharing data, I tested whether weather sensitivity varies between weekday commuters and weekend recreational users — and found that it does, in ways that have real operational implications for micromobility operators.
@@ -129,7 +131,7 @@ Near-parallel slopes indicate humidity's deterrent effect is broadly uniform acr
 
 ## 👤 About
 
-Built by **Frank Dong** as part of statistics coursework at UCL (Grade: 74/100 — First Class).
+Built by **Frank Dong** as part of statistics coursework at UCL (Grade: First Class Honours).
 
 Motivated by a genuine interest in urban micromobility data and operations.
 
