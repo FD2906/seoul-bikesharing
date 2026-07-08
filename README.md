@@ -3,6 +3,8 @@
 
 > **Does weather affect bike-sharing demand differently depending on *why* you're riding?**
 
+📄 [Full report (PDF)](report/seoul_bike_weather_analysis.pdf)
+
 I'm an avid Lime user in London. I noticed I always check the weather before a weekend ride — but rarely before cycling to uni on a weekday. That small personal observation became the research question behind this project.
 
 Using Seoul's public bike-sharing data, I tested whether weather sensitivity varies between weekday commuters and weekend recreational users — and found that it does, in ways that have real operational implications for micromobility operators.
