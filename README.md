@@ -57,7 +57,7 @@ seoul-bike-weather-analysis/
 │   ├── seoul.csv                 # Raw dataset
 │   └── seoul_processed.csv        # Processed dataset 
 ├── src/
-│   ├── prep-processing.py         # Data cleaning & feature engineering
+│   ├── prep-process.py         # Data cleaning & feature engineering
 │   └── analysis.py                # EDA, regression, hypothesis testing
 ├── imgs/
 │   └── selected/                   # Selected visualisations
