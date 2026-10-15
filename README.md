@@ -55,7 +55,7 @@ These behavioural differences are actionable for operators like Lime, TfL, or Fo
 seoul-bike-weather-analysis/
 ├── data/
 │   ├── seoul.csv                 # Raw dataset
-│   └── seoul_processed.py        # Processed dataset 
+│   └── seoul_processed.csv        # Processed dataset 
 ├── src/
 │   ├── prep-processing.py         # Data cleaning & feature engineering
 │   └── analysis.py                # EDA, regression, hypothesis testing
